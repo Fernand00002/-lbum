@@ -3,40 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuestro Álbum de Novios</title>
+    <title>Nuestra Historia</title>
+    <!-- Tipografías románticas de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <!-- Librería de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
+    <!-- Contenedor del fondo animado de corazones -->
+    <div id="corazones-bg" class="corazones-container" aria-hidden="true"></div>
+
+    <!-- Notificación elegante (reemplaza el alert del navegador) -->
+    <div id="notificacion" class="notificacion oculto"></div>
+
     <header class="hero">
-        <h1>Nuestra Historia ❤️</h1>
-        <!-- Contador de días -->
-        <div class="contador-card">
-            <h2>Llevamos juntos:</h2>
-            <p id="contador-dias">Cargando días...</p>
+        <div class="hero-content">
+            <h1>Nuestra Historia</h1>
+            <p class="subtitulo">Cada día contigo es mi favorito</p>
+            <div class="contador-card">
+                <span class="contador-etiqueta">Llevamos juntos</span>
+                <p id="contador-dias">Calculando...</p>
+            </div>
         </div>
     </header>
 
     <main class="container">
         <!-- Formulario para subir fotos/videos -->
-        <section class="upload-section">
-            <h3>Subir un nuevo recuerdo</h3>
+        <section class="card upload-section">
+            <h3>Guardar un nuevo recuerdo</h3>
             <form id="upload-form">
-                <input type="text" id="titulo" placeholder="¿Qué hicimos o dónde fue?" required>
-                <input type="date" id="fecha" required>
-                <input type="file" id="archivo" accept="image/*,video/*" required>
-                <button type="submit" id="btn-subir">Guardar Recuerdo</button>
+                <div class="form-group">
+                    <label for="titulo">Descripción del momento</label>
+                    <input type="text" id="titulo" placeholder="Ej. Cena de aniversario, paseo en la tarde..." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="fecha">Fecha del recuerdo</label>
+                    <input type="date" id="fecha" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="archivo">Foto o video</label>
+                    <input type="file" id="archivo" accept="image/*,video/*" required>
+                </div>
+
+                <button type="submit" id="btn-subir">Guardar en nuestro álbum</button>
             </form>
         </section>
 
         <!-- Galería de recuerdos -->
-        <section class="gallery-section">
+        <section class="card gallery-section">
             <h3>Nuestros Momentos</h3>
-            <div id="galeria" class="grid-galeria">
-                <!-- Las fotos cargan aquí automáticamente -->
-            </div>
+            <div id="galeria" class="grid-galeria"></div>
         </section>
     </main>
 
