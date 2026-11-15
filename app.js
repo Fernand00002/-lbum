@@ -6,7 +6,7 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // 1. CONFIGURA TU FECHA DE INICIO DE NOVIOS (Año, Mes - 1, Día)
 // Recuerda: Enero = 0, Febrero = 1, ..., Noviembre = 10, Diciembre = 11
-const fechaInicio = new Date(2025, 4, 14); 
+const fechaInicio = new Date(2026, 10, 11); 
 
 function calcularDias() {
     const hoy = new Date();
