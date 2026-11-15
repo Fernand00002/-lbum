@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestro Álbum de Novios</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Librería de Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+    <header class="hero">
+        <h1>Nuestra Historia ❤️</h1>
+        <!-- Contador de días -->
+        <div class="contador-card">
+            <h2>Llevamos juntos:</h2>
+            <p id="contador-dias">Cargando días...</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Formulario para subir fotos/videos -->
+        <section class="upload-section">
+            <h3>Subir un nuevo recuerdo</h3>
+            <form id="upload-form">
+                <input type="text" id="titulo" placeholder="¿Qué hicimos o dónde fue?" required>
+                <input type="date" id="fecha" required>
+                <input type="file" id="archivo" accept="image/*,video/*" required>
+                <button type="submit" id="btn-subir">Guardar Recuerdo</button>
+            </form>
+        </section>
+
+        <!-- Galería de recuerdos -->
+        <section class="gallery-section">
+            <h3>Nuestros Momentos</h3>
+            <div id="galeria" class="grid-galeria">
+                <!-- Las fotos cargan aquí automáticamente -->
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

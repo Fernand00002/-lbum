@@ -1,0 +1,128 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+    color: #333;
+    padding-bottom: 50px;
+}
+
+.hero {
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+
+.hero h1 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.contador-card {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 15px 25px;
+    display: inline-block;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+}
+
+.contador-card h2 {
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+#contador-dias {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+
+.upload-section, .gallery-section {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+.upload-section h3, .gallery-section h3 {
+    margin-bottom: 15px;
+    color: #ff416c;
+}
+
+#upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#upload-form input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+#upload-form button {
+    background: #ff416c;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#upload-form button:hover {
+    background: #e0355b;
+}
+
+.grid-galeria {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 15px;
+}
+
+.tarjeta-recuerdo {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.tarjeta-recuerdo img, .tarjeta-recuerdo video {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.tarjeta-info {
+    padding: 10px;
+}
+
+.tarjeta-info h4 {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.tarjeta-info p {
+    font-size: 0.85rem;
+    color: #666;
+}
