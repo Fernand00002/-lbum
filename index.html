@@ -4,20 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nuestra Historia</title>
-    <!-- Tipografías románticas de Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <!-- Librería de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-    <!-- Contenedor del fondo animado de corazones -->
     <div id="corazones-bg" class="corazones-container" aria-hidden="true"></div>
-
-    <!-- Notificación elegante (reemplaza el alert del navegador) -->
     <div id="notificacion" class="notificacion oculto"></div>
 
     <header class="hero">
@@ -32,7 +27,6 @@
     </header>
 
     <main class="container">
-        <!-- Formulario para subir fotos/videos -->
         <section class="card upload-section">
             <h3>Guardar un nuevo recuerdo</h3>
             <form id="upload-form">
@@ -47,15 +41,15 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="archivo">Foto o video</label>
-                    <input type="file" id="archivo" accept="image/*,video/*" required>
+                    <label for="archivo">Fotos o videos (puedes elegir varios)</label>
+                    <input type="file" id="archivo" accept="image/*,video/*" multiple required>
+                    <span id="contador-archivos" class="texto-ayuda">Ningún archivo seleccionado</span>
                 </div>
 
                 <button type="submit" id="btn-subir">Guardar en nuestro álbum</button>
             </form>
         </section>
 
-        <!-- Galería de recuerdos -->
         <section class="card gallery-section">
             <h3>Nuestros Momentos</h3>
             <div id="galeria" class="grid-galeria"></div>
