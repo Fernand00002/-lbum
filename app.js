@@ -4,8 +4,8 @@ const SUPABASE_ANON_KEY = 'sb_publishable__TEe5ZwJKylH8xLd20F4xA_nSAmQA79';
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// 1. FECHA DE INICIO: 11 de Noviembre de 2026 (Mes 10 en JS)
-const fechaInicio = new Date(2026, 10, 1); 
+// 1. FECHA DE INICIO: 1 de Noviembre de 2026 (Noviembre = mes 10 en JavaScript)
+const fechaInicio = new Date(2026, 10, 1);
 
 function calcularDias() {
     const hoy = new Date();
@@ -18,7 +18,6 @@ function calcularDias() {
     document.getElementById('contador-dias').innerText = `${diasTotales} Días`;
 }
 
-// 2. FECHA DE HOY POR DEFECTO
 function inicializarFechaHoy() {
     const inputFecha = document.getElementById('fecha');
     const hoy = new Date();
@@ -28,7 +27,6 @@ function inicializarFechaHoy() {
     inputFecha.value = `${yyyy}-${mm}-${dd}`;
 }
 
-// Mostrar cuántos archivos seleccionó el usuario
 const inputArchivo = document.getElementById('archivo');
 const contadorArchivos = document.getElementById('contador-archivos');
 inputArchivo.addEventListener('change', () => {
@@ -42,7 +40,6 @@ inputArchivo.addEventListener('change', () => {
     }
 });
 
-// 3. NOTIFICACIÓN FLOTANTE PERSONALIZADA
 let timeoutNotificacion;
 function mostrarNotificacion(mensaje, esError = false) {
     const notif = document.getElementById('notificacion');
@@ -55,7 +52,6 @@ function mostrarNotificacion(mensaje, esError = false) {
     }, 3500);
 }
 
-// 4. FONDO ANIMADO DE CORAZONES EN SVG
 function iniciarFondoCorazones() {
     const contenedor = document.getElementById('corazones-bg');
     const colores = ['#e87a90', '#d45d79', '#f2a6b8', '#b83358'];
@@ -93,7 +89,7 @@ function formatearFechaLegible(fechaISO) {
     return `${partes[2]}/${partes[1]}/${partes[0]}`;
 }
 
-// 5. CARGAR Y MOSTRAR RECUERDOS CON CARRUSEL MÚLTIPLE
+// 2. CARGAR Y MOSTRAR RECUERDOS
 async function cargarRecuerdos() {
     const galeriaDiv = document.getElementById('galeria');
     galeriaDiv.innerHTML = '<p class="mensaje-vacio">Cargando recuerdos...</p>';
@@ -116,7 +112,6 @@ async function cargarRecuerdos() {
 
     galeriaDiv.innerHTML = '';
     data.forEach(recuerdo => {
-        // Obtener lista de archivos (compatible con recuerdos antiguos y nuevos)
         let listaArchivos = [];
         if (Array.isArray(recuerdo.archivos) && recuerdo.archivos.length > 0) {
             listaArchivos = recuerdo.archivos;
@@ -134,7 +129,6 @@ async function cargarRecuerdos() {
             return `<div class="carrusel-slide ${index === 0 ? 'activo' : ''}">${mediaTag}</div>`;
         }).join('');
 
-        // Controles solo si hay más de 1 archivo
         const controlesHTML = totalArchivos > 1 ? `
             <span class="carrusel-badge">1 / ${totalArchivos}</span>
             <button type="button" class="carrusel-btn prev" aria-label="Anterior">
@@ -152,6 +146,12 @@ async function cargarRecuerdos() {
         tarjeta.className = 'tarjeta-recuerdo';
         tarjeta.innerHTML = `
             <div class="carrusel-contenedor">
+                <button type="button" class="btn-editar-tarjeta" title="Editar recuerdo" aria-label="Editar recuerdo">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                </button>
                 ${slidesHTML}
                 ${controlesHTML}
             </div>
@@ -169,7 +169,12 @@ async function cargarRecuerdos() {
             </div>
         `;
 
-        // Lógica de navegación del carrusel si tiene varios archivos
+        // Evento abrir modal de edición
+        const btnEditar = tarjeta.querySelector('.btn-editar-tarjeta');
+        btnEditar.addEventListener('click', () => {
+            abrirModalEdicion(recuerdo, listaArchivos);
+        });
+
         if (totalArchivos > 1) {
             let indiceActual = 0;
             const slides = tarjeta.querySelectorAll('.carrusel-slide');
@@ -179,7 +184,6 @@ async function cargarRecuerdos() {
             const btnNext = tarjeta.querySelector('.next');
 
             const actualizarSlide = (nuevoIndice) => {
-                // Pausar video si estaba reproduciéndose al cambiar de slide
                 const videoActual = slides[indiceActual].querySelector('video');
                 if (videoActual) videoActual.pause();
 
@@ -201,7 +205,7 @@ async function cargarRecuerdos() {
     });
 }
 
-// 6. SUBIR MÚLTIPLES ARCHIVOS EN UN SOLO RECUERDO
+// 3. SUBIR NUEVO RECUERDO
 const form = document.getElementById('upload-form');
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -262,6 +266,152 @@ form.addEventListener('submit', async (e) => {
     } finally {
         btnSubir.innerText = 'Guardar en nuestro álbum';
         btnSubir.disabled = false;
+    }
+});
+
+// 4. LÓGICA DE EDICIÓN DE RECUERDOS
+const modalEditar = document.getElementById('modal-editar');
+const editForm = document.getElementById('edit-form');
+const editListaActuales = document.getElementById('edit-lista-actuales');
+const editNuevosInput = document.getElementById('edit-nuevos-archivos');
+const editContadorNuevos = document.getElementById('edit-contador-nuevos');
+
+let archivosEdicionActuales = [];
+
+editNuevosInput.addEventListener('change', () => {
+    const total = editNuevosInput.files.length;
+    if (total === 0) {
+        editContadorNuevos.innerText = 'Ningún archivo adicional seleccionado';
+    } else if (total === 1) {
+        editContadorNuevos.innerText = `1 archivo adicional (${editNuevosInput.files[0].name})`;
+    } else {
+        editContadorNuevos.innerText = `${total} archivos adicionales seleccionados`;
+    }
+});
+
+function renderizarArchivosEnEdicion() {
+    editListaActuales.innerHTML = '';
+
+    if (archivosEdicionActuales.length === 0) {
+        editListaActuales.innerHTML = '<p class="texto-ayuda" style="grid-column: 1 / -1;">No quedarán archivos anteriores. Agrega al menos uno nuevo abajo.</p>';
+        return;
+    }
+
+    archivosEdicionActuales.forEach((url, index) => {
+        const esVideo = url.match(/\.(mp4|webm|ogg|mov)$/i);
+        const mediaHTML = esVideo
+            ? `<video src="${url}" muted></video>`
+            : `<img src="${url}" alt="Archivo ${index + 1}">`;
+
+        const item = document.createElement('div');
+        item.className = 'edit-item-media';
+        item.innerHTML = `
+            ${mediaHTML}
+            <button type="button" class="btn-quitar-media" title="Quitar este archivo" aria-label="Quitar">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        `;
+
+        item.querySelector('.btn-quitar-media').addEventListener('click', () => {
+            archivosEdicionActuales.splice(index, 1);
+            renderizarArchivosEnEdicion();
+        });
+
+        editListaActuales.appendChild(item);
+    });
+}
+
+function abrirModalEdicion(recuerdo, listaArchivos) {
+    document.getElementById('edit-id').value = recuerdo.id;
+    document.getElementById('edit-titulo').value = recuerdo.titulo;
+    document.getElementById('edit-fecha').value = recuerdo.fecha_recuerdo;
+    
+    archivosEdicionActuales = [...listaArchivos];
+    editNuevosInput.value = '';
+    editContadorNuevos.innerText = 'Ningún archivo adicional seleccionado';
+
+    renderizarArchivosEnEdicion();
+    modalEditar.classList.remove('oculto');
+}
+
+function cerrarModalEdicion() {
+    modalEditar.classList.add('oculto');
+}
+
+document.getElementById('btn-cerrar-modal').addEventListener('click', cerrarModalEdicion);
+document.getElementById('btn-cancelar-edit').addEventListener('click', cerrarModalEdicion);
+modalEditar.addEventListener('click', (e) => {
+    if (e.target === modalEditar) cerrarModalEdicion();
+});
+
+editForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const idRecuerdo = document.getElementById('edit-id').value;
+    const nuevoTitulo = document.getElementById('edit-titulo').value.trim();
+    const nuevaFecha = document.getElementById('edit-fecha').value;
+    const archivosNuevos = Array.from(editNuevosInput.files);
+
+    if (archivosEdicionActuales.length === 0 && archivosNuevos.length === 0) {
+        mostrarNotificacion('El recuerdo debe tener al menos una foto o video.', true);
+        return;
+    }
+
+    const btnGuardarEdit = document.getElementById('btn-guardar-edit');
+    btnGuardarEdit.disabled = true;
+
+    try {
+        const urlsNuevasSubidas = [];
+
+        for (let i = 0; i < archivosNuevos.length; i++) {
+            const archivo = archivosNuevos[i];
+            btnGuardarEdit.innerText = `Subiendo ${i + 1} de ${archivosNuevos.length}...`;
+
+            const extension = archivo.name.split('.').pop();
+            const nombreArchivo = `${Date.now()}_edit_${i}_${Math.random().toString(36).substring(2, 8)}.${extension}`;
+
+            const { error: uploadError } = await supabaseClient.storage
+                .from('fotos')
+                .upload(nombreArchivo, archivo);
+
+            if (uploadError) throw uploadError;
+
+            const { data: urlData } = supabaseClient.storage
+                .from('fotos')
+                .getPublicUrl(nombreArchivo);
+
+            urlsNuevasSubidas.push(urlData.publicUrl);
+        }
+
+        btnGuardarEdit.innerText = 'Actualizando...';
+
+        const listaFinalArchivos = [...archivosEdicionActuales, ...urlsNuevasSubidas];
+
+        const { error: updateError } = await supabaseClient
+            .from('recuerdos')
+            .update({
+                titulo: nuevoTitulo,
+                fecha_recuerdo: nuevaFecha,
+                url_archivo: listaFinalArchivos[0],
+                archivos: listaFinalArchivos
+            })
+            .eq('id', idRecuerdo);
+
+        if (updateError) throw updateError;
+
+        cerrarModalEdicion();
+        mostrarNotificacion('Recuerdo actualizado correctamente');
+        cargarRecuerdos();
+
+    } catch (error) {
+        mostrarNotificacion('No se pudieron guardar los cambios. Intenta de nuevo.', true);
+        console.error(error);
+    } finally {
+        btnGuardarEdit.innerText = 'Guardar cambios';
+        btnGuardarEdit.disabled = false;
     }
 });
 
