@@ -59,6 +59,49 @@ body {
     }
 }
 
+/* Reproductor de música flotante */
+.musica-flotante {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2500;
+}
+
+.btn-musica {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(184, 51, 88, 0.3);
+    color: var(--color-primario);
+    padding: 8px 14px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 15px rgba(184, 51, 88, 0.15);
+    transition: all 0.25s ease;
+}
+
+.btn-musica:hover {
+    background: var(--color-primario);
+    color: #ffffff;
+    transform: scale(1.05);
+}
+
+.btn-musica.reproduciendo {
+    background: var(--color-primario);
+    color: #ffffff;
+    animation: pulso-musica 2s infinite;
+}
+
+@keyframes pulso-musica {
+    0% { box-shadow: 0 0 0 0 rgba(184, 51, 88, 0.4); }
+    70% { box-shadow: 0 0 0 8px rgba(184, 51, 88, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(184, 51, 88, 0); }
+}
+
 .notificacion {
     position: fixed;
     bottom: 25px;
@@ -300,7 +343,6 @@ input:focus {
     display: block;
 }
 
-/* Botón de editar elegante en la esquina superior izquierda de cada tarjeta */
 .btn-editar-tarjeta {
     position: absolute;
     top: 10px;
@@ -410,9 +452,6 @@ input:focus {
     color: var(--texto-suave);
 }
 
-/* ==========================================
-   VENTANA MODAL FLOTANTE (ARREGLADA)
-   ========================================== */
 .modal-overlay {
     position: fixed;
     top: 0;
