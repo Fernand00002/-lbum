@@ -56,6 +56,51 @@
         </section>
     </main>
 
+    <!-- Ventana Modal para Editar Recuerdo -->
+    <div id="modal-editar" class="modal-overlay oculto">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Editar recuerdo</h3>
+                <button type="button" id="btn-cerrar-modal" class="btn-cerrar" aria-label="Cerrar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <form id="edit-form">
+                <input type="hidden" id="edit-id">
+
+                <div class="form-group">
+                    <label for="edit-titulo">Descripción del momento</label>
+                    <input type="text" id="edit-titulo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-fecha">Fecha del recuerdo</label>
+                    <input type="date" id="edit-fecha" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Archivos actuales (toca la X para quitar)</label>
+                    <div id="edit-lista-actuales" class="edit-grid-archivos"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-nuevos-archivos">Agregar más fotos o videos (opcional)</label>
+                    <input type="file" id="edit-nuevos-archivos" accept="image/*,video/*" multiple>
+                    <span id="edit-contador-nuevos" class="texto-ayuda">Ningún archivo adicional seleccionado</span>
+                </div>
+
+                <div class="modal-acciones">
+                    <button type="button" id="btn-cancelar-edit" class="btn-secundario">Cancelar</button>
+                    <button type="submit" id="btn-guardar-edit" class="btn-primario">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="app.js"></script>
 </body>
 </html>
