@@ -24,7 +24,6 @@ body {
     overflow-x: hidden;
 }
 
-/* Fondo animado de corazones */
 .corazones-container {
     position: fixed;
     top: 0;
@@ -60,7 +59,6 @@ body {
     }
 }
 
-/* Notificación flotante personalizada */
 .notificacion {
     position: fixed;
     bottom: 25px;
@@ -89,7 +87,6 @@ body {
     background-color: #9e2a2b;
 }
 
-/* Encabezado */
 .hero {
     position: relative;
     z-index: 1;
@@ -142,7 +139,6 @@ body {
     margin-top: 4px;
 }
 
-/* Contenedor principal y tarjetas */
 .container {
     position: relative;
     z-index: 1;
@@ -169,7 +165,6 @@ body {
     text-align: center;
 }
 
-/* Formulario y solución para input date en móviles */
 #upload-form {
     display: flex;
     flex-direction: column;
@@ -188,6 +183,12 @@ body {
     color: var(--texto-suave);
 }
 
+.texto-ayuda {
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+    font-style: italic;
+}
+
 #upload-form input[type="text"],
 #upload-form input[type="date"],
 #upload-form input[type="file"] {
@@ -203,7 +204,6 @@ body {
     transition: border-color 0.25s, box-shadow 0.25s;
 }
 
-/* Asegura visibilidad en Safari / Chrome Android */
 #upload-form input[type="date"] {
     display: block;
     -webkit-appearance: none;
@@ -241,10 +241,9 @@ body {
     transform: none;
 }
 
-/* Galería */
 .grid-galeria {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 18px;
 }
 
@@ -271,12 +270,97 @@ body {
     transform: translateY(-4px);
 }
 
-.tarjeta-recuerdo img,
-.tarjeta-recuerdo video {
+/* Carrusel dentro de cada tarjeta */
+.carrusel-contenedor {
+    position: relative;
     width: 100%;
-    height: 210px;
+    height: 230px;
+    background-color: #1f1417;
+    overflow: hidden;
+}
+
+.carrusel-slide {
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.carrusel-slide.activo {
+    display: block;
+}
+
+.carrusel-slide img,
+.carrusel-slide video {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     display: block;
+}
+
+.carrusel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(59, 35, 42, 0.65);
+    color: #fff;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    transition: background 0.2s;
+}
+
+.carrusel-btn:hover {
+    background: var(--color-primario);
+}
+
+.carrusel-btn.prev {
+    left: 8px;
+}
+
+.carrusel-btn.next {
+    right: 8px;
+}
+
+.carrusel-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(59, 35, 42, 0.72);
+    color: #fff;
+    font-size: 0.75rem;
+    padding: 3px 9px;
+    border-radius: 20px;
+    z-index: 5;
+    backdrop-filter: blur(4px);
+}
+
+.carrusel-puntos {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+    z-index: 5;
+}
+
+.punto {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.45);
+    transition: background 0.2s, transform 0.2s;
+}
+
+.punto.activo {
+    background: #ffffff;
+    transform: scale(1.25);
 }
 
 .tarjeta-info {
