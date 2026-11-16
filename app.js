@@ -27,6 +27,27 @@ function inicializarFechaHoy() {
     inputFecha.value = `${yyyy}-${mm}-${dd}`;
 }
 
+// Control del reproductor de música de fondo
+const audioFondo = document.getElementById('audio-fondo');
+const btnMusica = document.getElementById('btn-musica');
+const textoMusica = document.getElementById('texto-musica');
+
+btnMusica.addEventListener('click', () => {
+    if (audioFondo.paused) {
+        audioFondo.play().then(() => {
+            btnMusica.classList.add('reproduciendo');
+            textoMusica.innerText = 'Pausar';
+        }).catch(err => {
+            console.log("Error al reproducir audio:", err);
+            mostrarNotificacion('Sube un enlace de música válido en el código', true);
+        });
+    } else {
+        audioFondo.pause();
+        btnMusica.classList.remove('reproduciendo');
+        textoMusica.innerText = 'Música';
+    }
+});
+
 const inputArchivo = document.getElementById('archivo');
 const contadorArchivos = document.getElementById('contador-archivos');
 inputArchivo.addEventListener('change', () => {
@@ -89,7 +110,6 @@ function formatearFechaLegible(fechaISO) {
     return `${partes[2]}/${partes[1]}/${partes[0]}`;
 }
 
-// 2. CARGAR Y MOSTRAR RECUERDOS
 async function cargarRecuerdos() {
     const galeriaDiv = document.getElementById('galeria');
     galeriaDiv.innerHTML = '<p class="mensaje-vacio">Cargando recuerdos...</p>';
@@ -169,7 +189,6 @@ async function cargarRecuerdos() {
             </div>
         `;
 
-        // Evento abrir modal de edición
         const btnEditar = tarjeta.querySelector('.btn-editar-tarjeta');
         btnEditar.addEventListener('click', () => {
             abrirModalEdicion(recuerdo, listaArchivos);
@@ -205,7 +224,6 @@ async function cargarRecuerdos() {
     });
 }
 
-// 3. SUBIR NUEVO RECUERDO
 const form = document.getElementById('upload-form');
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -269,7 +287,6 @@ form.addEventListener('submit', async (e) => {
     }
 });
 
-// 4. LÓGICA DE EDICIÓN DE RECUERDOS
 const modalEditar = document.getElementById('modal-editar');
 const editForm = document.getElementById('edit-form');
 const editListaActuales = document.getElementById('edit-lista-actuales');
@@ -415,7 +432,6 @@ editForm.addEventListener('submit', async (e) => {
     }
 });
 
-// Inicializar todo
 calcularDias();
 inicializarFechaHoy();
 iniciarFondoCorazones();
