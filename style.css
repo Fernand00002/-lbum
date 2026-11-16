@@ -1,11 +1,10 @@
 :root {
-    --color-primario: #b83358;
-    --color-primario-oscuro: #8f2241;
-    --color-secundario: #e87a90;
-    --fondo-crema: #fff7f8;
-    --texto-oscuro: #3b232a;
-    --texto-suave: #7a5862;
-    --blanco-translucido: rgba(255, 255, 255, 0.92);
+    --color-primario: #6a4c93;
+    --color-primario-oscuro: #4a336b;
+    --color-secundario: #3a86ff;
+    --texto-oscuro: #1d2033;
+    --texto-suave: #525875;
+    --blanco-cristal: rgba(255, 255, 255, 0.86);
 }
 
 * {
@@ -16,7 +15,10 @@
 }
 
 body {
-    background: linear-gradient(180deg, #ffeef2 0%, #fff7f8 50%, #fce4ec 100%);
+    /* Fondo degradado animado en tonos azul y morado */
+    background: linear-gradient(-45deg, #1b1535, #272959, #3b2667, #1e3a6e);
+    background-size: 400% 400%;
+    animation: auroraFondo 14s ease infinite;
     color: var(--texto-oscuro);
     min-height: 100vh;
     padding-bottom: 60px;
@@ -24,6 +26,13 @@ body {
     overflow-x: hidden;
 }
 
+@keyframes auroraFondo {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Contenedor de estrellas y corazones */
 .corazones-container {
     position: fixed;
     top: 0;
@@ -35,26 +44,53 @@ body {
     overflow: hidden;
 }
 
-.corazon-flotante {
+/* Estrellas titilando */
+.estrella-fondo {
     position: absolute;
-    top: -40px;
-    opacity: 0.35;
-    animation: caer linear infinite;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #a5b4fc, 0 0 14px #3a86ff;
+    animation: titilar ease-in-out infinite alternate;
 }
 
-@keyframes caer {
+@keyframes titilar {
     0% {
-        transform: translateY(-10vh) rotate(0deg);
-        opacity: 0;
-    }
-    15% {
-        opacity: 0.4;
-    }
-    85% {
-        opacity: 0.35;
+        opacity: 0.15;
+        transform: scale(0.8);
     }
     100% {
-        transform: translateY(110vh) rotate(360deg);
+        opacity: 0.95;
+        transform: scale(1.35);
+    }
+}
+
+/* Corazones flotantes con brillo y balanceo */
+.corazon-flotante {
+    position: absolute;
+    top: -60px;
+    animation: caerBalanceo linear forwards;
+    will-change: transform, opacity;
+}
+
+@keyframes caerBalanceo {
+    0% {
+        transform: translateY(-10vh) translateX(0px) rotate(0deg) scale(0.85);
+        opacity: 0;
+    }
+    12% {
+        opacity: var(--opacidad-max, 0.75);
+    }
+    35% {
+        transform: translateY(30vh) translateX(var(--desvio-x, 25px)) rotate(120deg) scale(1);
+    }
+    70% {
+        transform: translateY(70vh) translateX(calc(var(--desvio-x, 25px) * -1)) rotate(240deg) scale(0.95);
+    }
+    88% {
+        opacity: var(--opacidad-max, 0.75);
+    }
+    100% {
+        transform: translateY(115vh) translateX(0px) rotate(360deg) scale(0.85);
         opacity: 0;
     }
 }
@@ -68,38 +104,39 @@ body {
 }
 
 .btn-musica {
-    background: rgba(255, 255, 255, 0.85);
-    border: 1px solid rgba(184, 51, 88, 0.3);
-    color: var(--color-primario);
-    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(165, 180, 252, 0.5);
+    color: var(--color-primario-oscuro);
+    padding: 8px 15px;
     border-radius: 50px;
     font-size: 0.85rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 6px;
-    backdrop-filter: blur(8px);
-    box-shadow: 0 4px 15px rgba(184, 51, 88, 0.15);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 18px rgba(58, 134, 255, 0.35);
     transition: all 0.25s ease;
 }
 
 .btn-musica:hover {
-    background: var(--color-primario);
+    background: var(--color-secundario);
     color: #ffffff;
     transform: scale(1.05);
 }
 
 .btn-musica.reproduciendo {
-    background: var(--color-primario);
+    background: linear-gradient(135deg, #6a4c93, #3a86ff);
     color: #ffffff;
+    border-color: transparent;
     animation: pulso-musica 2s infinite;
 }
 
 @keyframes pulso-musica {
-    0% { box-shadow: 0 0 0 0 rgba(184, 51, 88, 0.4); }
-    70% { box-shadow: 0 0 0 8px rgba(184, 51, 88, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(184, 51, 88, 0); }
+    0% { box-shadow: 0 0 0 0 rgba(58, 134, 255, 0.6); }
+    70% { box-shadow: 0 0 0 10px rgba(58, 134, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(58, 134, 255, 0); }
 }
 
 .notificacion {
@@ -107,13 +144,14 @@ body {
     bottom: 25px;
     left: 50%;
     transform: translateX(-50%) translateY(0);
-    background-color: var(--color-primario-oscuro);
+    background: linear-gradient(135deg, #4a336b, #2b4c7e);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     color: #fff;
     padding: 14px 28px;
     border-radius: 50px;
     font-size: 0.95rem;
     font-weight: 500;
-    box-shadow: 0 10px 25px rgba(143, 34, 65, 0.35);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
     z-index: 2000;
     transition: opacity 0.4s ease, transform 0.4s ease;
     text-align: center;
@@ -127,44 +165,49 @@ body {
 }
 
 .notificacion.error {
-    background-color: #9e2a2b;
+    background: #b91c1c;
 }
 
+/* Encabezado translúcido integrado con el cielo */
 .hero {
     position: relative;
     z-index: 1;
-    background: linear-gradient(135deg, #9e2a4b 0%, #d45d79 100%);
+    background: linear-gradient(135deg, rgba(106, 76, 147, 0.65) 0%, rgba(58, 134, 255, 0.55) 100%);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     color: white;
     text-align: center;
-    padding: 50px 20px 45px;
+    padding: 55px 20px 45px;
     border-bottom-left-radius: 40px;
     border-bottom-right-radius: 40px;
-    box-shadow: 0 10px 30px rgba(184, 51, 88, 0.2);
+    box-shadow: 0 12px 35px rgba(15, 12, 41, 0.4);
 }
 
 .hero h1 {
     font-family: 'Playfair Display', serif;
-    font-size: 2.5rem;
+    font-size: 2.6rem;
     font-weight: 700;
     letter-spacing: 0.5px;
     margin-bottom: 6px;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
 }
 
 .subtitulo {
     font-size: 0.95rem;
     font-weight: 300;
-    opacity: 0.9;
+    opacity: 0.95;
     margin-bottom: 24px;
     font-style: italic;
 }
 
 .contador-card {
-    background: rgba(255, 255, 255, 0.16);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 16px 32px;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    padding: 16px 34px;
     display: inline-block;
     border-radius: 20px;
     backdrop-filter: blur(8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .contador-etiqueta {
@@ -177,7 +220,7 @@ body {
 
 #contador-dias {
     font-family: 'Playfair Display', serif;
-    font-size: 2rem;
+    font-size: 2.1rem;
     font-weight: 700;
     margin-top: 4px;
 }
@@ -190,21 +233,22 @@ body {
     padding: 0 16px;
 }
 
+/* Tarjetas tipo cristal para dejar ver la animación detrás */
 .card {
-    background: var(--blanco-translucido);
-    backdrop-filter: blur(10px);
+    background: var(--blanco-cristal);
+    backdrop-filter: blur(14px);
     padding: 26px;
     border-radius: 22px;
-    border: 1px solid rgba(232, 122, 144, 0.25);
-    box-shadow: 0 8px 24px rgba(184, 51, 88, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    box-shadow: 0 12px 32px rgba(15, 12, 41, 0.28);
     margin-bottom: 24px;
 }
 
 .card h3 {
     font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
+    font-size: 1.55rem;
     margin-bottom: 18px;
-    color: var(--color-primario);
+    color: var(--color-primario-oscuro);
     text-align: center;
 }
 
@@ -239,11 +283,11 @@ input[type="file"] {
     width: 100%;
     min-height: 46px;
     padding: 10px 14px;
-    border: 1px solid #ecc6d0;
+    border: 1px solid #cbd5e1;
     border-radius: 12px;
     font-size: 0.95rem;
     color: var(--texto-oscuro);
-    background-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.95);
     outline: none;
     transition: border-color 0.25s, box-shadow 0.25s;
 }
@@ -256,14 +300,14 @@ input[type="date"] {
 }
 
 input:focus {
-    border-color: var(--color-primario);
-    box-shadow: 0 0 0 3px rgba(184, 51, 88, 0.12);
+    border-color: var(--color-secundario);
+    box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.2);
 }
 
 #upload-form button,
 .btn-primario {
     margin-top: 6px;
-    background: linear-gradient(135deg, var(--color-primario), #d45d79);
+    background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
     color: white;
     border: none;
     padding: 14px;
@@ -272,13 +316,13 @@ input:focus {
     font-weight: 600;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 6px 16px rgba(184, 51, 88, 0.25);
+    box-shadow: 0 6px 18px rgba(58, 134, 255, 0.3);
 }
 
 #upload-form button:hover,
 .btn-primario:hover {
     transform: translateY(-1px);
-    box-shadow: 0 8px 20px rgba(184, 51, 88, 0.35);
+    box-shadow: 0 8px 22px rgba(58, 134, 255, 0.42);
 }
 
 #upload-form button:disabled,
@@ -306,22 +350,23 @@ input:focus {
     background: #ffffff;
     border-radius: 16px;
     overflow: hidden;
-    border: 1px solid #f4dce2;
-    box-shadow: 0 4px 14px rgba(184, 51, 88, 0.08);
+    border: 1px solid rgba(106, 76, 147, 0.18);
+    box-shadow: 0 6px 18px rgba(27, 21, 53, 0.12);
     display: flex;
     flex-direction: column;
-    transition: transform 0.25s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .tarjeta-recuerdo:hover {
     transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(58, 134, 255, 0.22);
 }
 
 .carrusel-contenedor {
     position: relative;
     width: 100%;
     height: 230px;
-    background-color: #1f1417;
+    background-color: #131124;
     overflow: hidden;
 }
 
@@ -347,7 +392,7 @@ input:focus {
     position: absolute;
     top: 10px;
     left: 10px;
-    background: rgba(59, 35, 42, 0.72);
+    background: rgba(27, 21, 53, 0.78);
     color: #fff;
     border: none;
     width: 32px;
@@ -363,7 +408,7 @@ input:focus {
 }
 
 .btn-editar-tarjeta:hover {
-    background: var(--color-primario);
+    background: var(--color-secundario);
     transform: scale(1.08);
 }
 
@@ -371,7 +416,7 @@ input:focus {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(59, 35, 42, 0.65);
+    background: rgba(27, 21, 53, 0.7);
     color: #fff;
     border: none;
     width: 30px;
@@ -386,7 +431,7 @@ input:focus {
 }
 
 .carrusel-btn:hover {
-    background: var(--color-primario);
+    background: var(--color-secundario);
 }
 
 .carrusel-btn.prev {
@@ -401,7 +446,7 @@ input:focus {
     position: absolute;
     top: 10px;
     right: 10px;
-    background: rgba(59, 35, 42, 0.72);
+    background: rgba(27, 21, 53, 0.78);
     color: #fff;
     font-size: 0.75rem;
     padding: 3px 9px;
@@ -458,8 +503,8 @@ input:focus {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(59, 35, 42, 0.6);
-    backdrop-filter: blur(5px);
+    background: rgba(19, 17, 36, 0.7);
+    backdrop-filter: blur(6px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -482,8 +527,8 @@ input:focus {
     overflow-y: auto;
     border-radius: 22px;
     padding: 24px;
-    border: 1px solid #f4dce2;
-    box-shadow: 0 20px 45px rgba(59, 35, 42, 0.3);
+    border: 1px solid #dce2f0;
+    box-shadow: 0 20px 45px rgba(15, 12, 41, 0.35);
     position: relative;
 }
 
@@ -497,13 +542,13 @@ input:focus {
 .modal-header h3 {
     font-family: 'Playfair Display', serif;
     font-size: 1.4rem;
-    color: var(--color-primario);
+    color: var(--color-primario-oscuro);
     margin-bottom: 0;
 }
 
 .btn-cerrar {
-    background: #fff0f3;
-    color: var(--color-primario);
+    background: #eef1ff;
+    color: var(--color-secundario);
     border: none;
     width: 34px;
     height: 34px;
@@ -516,7 +561,7 @@ input:focus {
 }
 
 .btn-cerrar:hover {
-    background: #ffdde4;
+    background: #dce2f0;
 }
 
 .edit-grid-archivos {
@@ -530,8 +575,8 @@ input:focus {
     height: 90px;
     border-radius: 10px;
     overflow: hidden;
-    border: 1px solid #ecc6d0;
-    background: #1f1417;
+    border: 1px solid #d0d7ed;
+    background: #131124;
 }
 
 .edit-item-media img,
@@ -546,7 +591,7 @@ input:focus {
     position: absolute;
     top: 5px;
     right: 5px;
-    background: rgba(158, 42, 43, 0.9);
+    background: rgba(185, 28, 28, 0.9);
     color: #fff;
     border: none;
     width: 24px;
@@ -575,7 +620,7 @@ input:focus {
 }
 
 .btn-secundario {
-    background: #f8e6eb;
+    background: #eef1ff;
     color: var(--texto-oscuro);
     border: none;
     padding: 14px;
@@ -587,5 +632,5 @@ input:focus {
 }
 
 .btn-secundario:hover {
-    background: #f0d3dc;
+    background: #dce2f0;
 }
