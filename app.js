@@ -27,7 +27,7 @@ function inicializarFechaHoy() {
     inputFecha.value = `${yyyy}-${mm}-${dd}`;
 }
 
-// Control del reproductor de música de fondo
+// Control del reproductor de música de fondo (Álvaro Díaz - INAROW)
 const audioFondo = document.getElementById('audio-fondo');
 const btnMusica = document.getElementById('btn-musica');
 const textoMusica = document.getElementById('texto-musica');
@@ -39,7 +39,7 @@ btnMusica.addEventListener('click', () => {
             textoMusica.innerText = 'Pausar';
         }).catch(err => {
             console.log("Error al reproducir audio:", err);
-            mostrarNotificacion('Sube un enlace de música válido en el código', true);
+            mostrarNotificacion('Error al reproducir la música', true);
         });
     } else {
         audioFondo.pause();
@@ -73,35 +73,80 @@ function mostrarNotificacion(mensaje, esError = false) {
     }, 3500);
 }
 
-function iniciarFondoCorazones() {
+// FONDO ESTELAR + LLUVIA LUMINOSA DE CORAZONES EN AZUL Y MORADO
+function iniciarFondoAnimado() {
     const contenedor = document.getElementById('corazones-bg');
-    const colores = ['#e87a90', '#d45d79', '#f2a6b8', '#b83358'];
 
-    setInterval(() => {
+    // 1. Generar 45 estrellas titilantes fijas en el cielo
+    for (let i = 0; i < 45; i++) {
+        const estrella = document.createElement('div');
+        estrella.className = 'estrella-fondo';
+        const size = (Math.random() * 2.5 + 1.5).toFixed(1);
+        estrella.style.width = `${size}px`;
+        estrella.style.height = `${size}px`;
+        estrella.style.left = `${Math.random() * 100}vw`;
+        estrella.style.top = `${Math.random() * 100}vh`;
+        estrella.style.animationDuration = `${(Math.random() * 2.5 + 1.5).toFixed(1)}s`;
+        estrella.style.animationDelay = `${(Math.random() * 3).toFixed(1)}s`;
+        contenedor.appendChild(estrella);
+    }
+
+    // 2. Paleta luminosa azul y morado (solo los colores de ambos)
+    const colores = [
+        { fill: '#3a86ff', glow: 'rgba(58, 134, 255, 0.75)' },  // Azul eléctrico
+        { fill: '#60a5fa', glow: 'rgba(96, 165, 250, 0.7)' },   // Azul cielo brillante
+        { fill: '#9b5de5', glow: 'rgba(155, 93, 229, 0.75)' },  // Morado neón
+        { fill: '#c084fc', glow: 'rgba(192, 132, 252, 0.7)' },  // Lavanda luminoso
+        { fill: '#818cf8', glow: 'rgba(129, 140, 248, 0.7)' }   // Índigo suave
+    ];
+
+    const crearCorazon = () => {
         if (document.hidden) return;
 
         const corazon = document.createElement('div');
         corazon.className = 'corazon-flotante';
 
-        const tamano = Math.floor(Math.random() * 16) + 12;
+        // Variación de tamaños para efecto de profundidad (cerca y lejos)
+        const esGrande = Math.random() > 0.7;
+        const tamano = esGrande 
+            ? Math.floor(Math.random() * 16) + 24  // 24px - 40px
+            : Math.floor(Math.random() * 10) + 12; // 12px - 22px
+
         const posicionX = Math.random() * 100;
-        const duracion = Math.random() * 6 + 7;
-        const color = colores[Math.floor(Math.random() * colores.length)];
+        const duracion = esGrande ? (Math.random() * 4 + 6) : (Math.random() * 5 + 8);
+        const desvioX = Math.floor(Math.random() * 50) - 25;
+        const tema = colores[Math.floor(Math.random() * colores.length)];
 
         corazon.style.left = `${posicionX}vw`;
         corazon.style.animationDuration = `${duracion}s`;
-        corazon.innerHTML = `
-            <svg width="${tamano}" height="${tamano}" viewBox="0 0 24 24" fill="${color}" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-            </svg>
-        `;
+        corazon.style.setProperty('--desvio-x', `${desvioX}px`);
+        corazon.style.setProperty('--opacidad-max', esGrande ? '0.85' : '0.55');
+        corazon.style.filter = `drop-shadow(0 0 ${esGrande ? '10px' : '5px'} ${tema.glow})`;
+
+        // Alternar entre corazones rellenos y corazones con contorno luminoso
+        const esContorno = Math.random() > 0.65;
+        corazon.innerHTML = esContorno
+            ? `<svg width="${tamano}" height="${tamano}" viewBox="0 0 24 24" fill="none" stroke="${tema.fill}" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+               </svg>`
+            : `<svg width="${tamano}" height="${tamano}" viewBox="0 0 24 24" fill="${tema.fill}" xmlns="http://www.w3.org/2000/svg">
+                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+               </svg>`;
 
         contenedor.appendChild(corazon);
 
         setTimeout(() => {
             corazon.remove();
         }, duracion * 1000);
-    }, 650);
+    };
+
+    // Crear varios corazones iniciales de inmediato para que no empiece vacío
+    for (let i = 0; i < 10; i++) {
+        setTimeout(crearCorazon, i * 250);
+    }
+
+    // Frecuencia más dinámica (cada 380ms)
+    setInterval(crearCorazon, 380);
 }
 
 function formatearFechaLegible(fechaISO) {
@@ -434,5 +479,5 @@ editForm.addEventListener('submit', async (e) => {
 
 calcularDias();
 inicializarFechaHoy();
-iniciarFondoCorazones();
+iniciarFondoAnimado();
 cargarRecuerdos();
