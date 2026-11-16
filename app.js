@@ -5,7 +5,7 @@ const SUPABASE_ANON_KEY = 'sb_publishable__TEe5ZwJKylH8xLd20F4xA_nSAmQA79';
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // 1. FECHA DE INICIO: 11 de Noviembre de 2026 (Mes 10 en JS)
-const fechaInicio = new Date(2026, 10, 11); 
+const fechaInicio = new Date(2026, 10, 1); 
 
 function calcularDias() {
     const hoy = new Date();
